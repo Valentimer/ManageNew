@@ -1,0 +1,36 @@
+﻿<Window x:Class="ManagerFamily.View.EditUsers"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ManagerFamily.View"
+        mc:Ignorable="d"
+       Title="EditUser" Height="300" Width="300"
+        Name="EditUserWnd">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Vertical"
+                    HorizontalAlignment ="Center"
+                    VerticalAlignment="Center"
+                    Width="200">
+            <TextBlock Text="New Name"/>
+            <TextBox Text="{Binding UserName}"/>
+            <TextBlock Text="New Surname"/>
+            <TextBox Text="{Binding UserSurName}"/>
+            <TextBlock Text=" New Phone"/>
+            <TextBox Text="{Binding UserPhone}"/>
+            <TextBlock Text="Write"/>
+            <ComboBox ItemsSource="{Binding AllPositions}"
+                      DisplayMemberPath="Name"
+                      SelectedItem="{Binding UserPosition}"/>
+
+        </StackPanel>
+        <Button Grid.Row="1" Content="Add write"
+                Command="{Binding EditUser}"
+                CommandParameter="{Binding ElementName=EditUserWnd}"/>
+    </Grid>
+</Window>
