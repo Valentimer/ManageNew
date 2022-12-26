@@ -30,6 +30,7 @@ namespace ManagerFamily.ViewModel
 
             AddNewCategoryCommand = new RelayCommand<string>(AddNewCategory);
             AddClickCountCommand = new RelayCommand(AddClickCount);
+            AddNewPositionCommand = new RelayCommand<string>(AddNewPosition);
         }
 
         //все категории трат
@@ -83,7 +84,6 @@ namespace ManagerFamily.ViewModel
         #region COMMANDS TO ADD
         //команды для добавляения
         public RelayCommand<string> AddNewCategoryCommand { get; }
-
         private void AddNewCategory(string categoryName)
         {
             if (categoryName == null || categoryName.Replace(" ", "").Length == 0)
@@ -125,65 +125,33 @@ namespace ManagerFamily.ViewModel
         //                 id = DataWorker.CreateSpendingCategory(CategoryName);
 
 
-            //                 SpendingCategory newCategory = DataWorker.GetCategoryById(id);
-            //                 AllCategories.Add(newCategory);
-            //                 var t = allCategory;
-            //                 AllCategories = null;
-            //                 //AllCategories= t;
-            //                 //ShowMessageToUser(resultSrt);
-            //                 //UpdateAllDataView();
-            //                 //SetNullValuesToProperties();
-            //                 //wnd.Close();
-            //             }
-            //         }));
-            //     }
-            // }
+        //                 SpendingCategory newCategory = DataWorker.GetCategoryById(id);
+        //                 AllCategories.Add(newCategory);
+        //                 var t = allCategory;
+        //                 AllCategories = null;
+        //                 //AllCategories= t;
+        //                 //ShowMessageToUser(resultSrt);
+        //                 //UpdateAllDataView();
+        //                 //SetNullValuesToProperties();
+        //                 //wnd.Close();
+        //             }
+        //         }));
+        //     }
+        // }
 
-        private RelayCommand<object> addNewPosition;
-        public RelayCommand<object> AddNewPosition
+        public RelayCommand<object> AddNewPositionCommand { get; }
+
+        private void AddNewPosition(string categoryName)
         {
-            get
+            if (categoryName == null || categoryName.Replace(" ", "").Length == 0)
             {
-                return addNewPosition ?? (addNewPosition = new RelayCommand<object>(obj =>
-                {
-                    Window wnd = obj as Window;
-                    string resultStr = "";
-                    int id;
-                    if (PositionName == null || PositionName.Replace(" ", "").Length == 0)
-                    {
-                        SetRedBlockControl(wnd, "NameBlock");
-                    }
-                    if (PositionPrice == null)
-                    {
-                        SetRedBlockControl(wnd, "PriceBlock");
-                    }
-                    if (PositionNumber == null)
-                    {
-                        SetRedBlockControl(wnd, "MaxNumberBlock");
-                    }
-                    if (PostionCategory == null)
-                    {
-                        MessageBox.Show("Укажите отдел!");
-                    }
-                    else
-                    {
-                        //resultStr = DataWorker.CreatePosition(PositionName, PositionPrice, PositionNumber, PostionCategory);
-
-                        id = DataWorker.CreatePosition(PositionName, PositionPrice, PositionNumber, PostionCategory);
-
-                        Position newPosition = DataWorker.GetPositionById(id);
-                        AllPositions.Add(newPosition);
-
-                        var t = allPosition;
-                        AllPositions = null;
-                        AllPositions = t;
-                        //ShowMessageToUser(resultStr);
-                        //UpdateAllDataView();
-                        SetNullValuesToProperties();
-                        wnd.Close();
-                    }
-                }));
+                //SetRedBlockControl(wnd, "NameBlock");
+                return;
             }
+            int id = DataWorker.CreateSpendingCategory(categoryName);
+            SpendingCategory newCategory = DataWorker.GetCategoryById(id);
+            AllCategories.Add(newCategory);
+            ClickCount++;
         }
 
         private RelayCommand<object> addNewUser;
@@ -414,8 +382,15 @@ namespace ManagerFamily.ViewModel
         //методы открытия окон
         private void OpenAddPositionWindowMethod()
         {
-            AddNewSpendingCategory newPosition = new AddNewSpendingCategory();
-            SetCenterPositionAndOpen(newPosition);
+            var viewModel = new NewSpendingCategoryViewModel();
+            var newPositionView = new AddNewSpendingCategory(viewModel);
+            newPositionView.ShowDialog();
+
+            if (viewModel.ResultId != -1)
+            {
+                SpendingCategory newCategory = DataWorker.GetCategoryById(viewModel.ResultId);
+                AllCategories.Add(newCategory);
+            }
         }
         private void OpenAddWriteWindowMethod()
         {

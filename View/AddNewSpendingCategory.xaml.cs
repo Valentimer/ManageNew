@@ -9,9 +9,10 @@ namespace ManagerFamily.View
     /// </summary>
     public partial class AddNewSpendingCategory : Window
     {
-        public AddNewSpendingCategory()
+        public AddNewSpendingCategory(ObservableObject context)
         {
             InitializeComponent();
+            DataContext = context;
         }
     }
 }
