@@ -1,4 +1,5 @@
-﻿using ManagerFamily.ViewModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using ManagerFamily.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +21,10 @@ namespace ManagerFamily.View
     /// </summary>
     public partial class AddNewWrite : Window
     {
-        public AddNewWrite()
+        public AddNewWrite(ObservableObject context)
         {
             InitializeComponent();
+            DataContext = context;
         }
     }
 }

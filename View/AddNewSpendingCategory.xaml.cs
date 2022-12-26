@@ -1,4 +1,5 @@
-﻿using ManagerFamily.ViewModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using ManagerFamily.ViewModel;
 using System.Windows;
 
 

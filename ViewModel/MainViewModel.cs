@@ -28,9 +28,9 @@ namespace ManagerFamily.ViewModel
             allPosition = new ObservableCollection<Position>(positions);
             allUser = new ObservableCollection<User>(users);
 
-            AddNewCategoryCommand = new RelayCommand<string>(AddNewCategory);
+            //AddNewCategoryCommand = new RelayCommand<string>(AddNewCategory);
             AddClickCountCommand = new RelayCommand(AddClickCount);
-            AddNewPositionCommand = new RelayCommand<string>(AddNewPosition);
+            //AddNewPositionCommand = new RelayCommand<string>(AddNewPosition);
         }
 
         //все категории трат
@@ -82,77 +82,46 @@ namespace ManagerFamily.ViewModel
         #endregion
 
         #region COMMANDS TO ADD
-        //команды для добавляения
-        public RelayCommand<string> AddNewCategoryCommand { get; }
-        private void AddNewCategory(string categoryName)
-        {
-            if (categoryName == null || categoryName.Replace(" ", "").Length == 0)
-            {
-                //SetRedBlockControl(wnd, "NameBlock");
-                return;
-            }
-            int id = DataWorker.CreateSpendingCategory(categoryName);
-            SpendingCategory newCategory = DataWorker.GetCategoryById(id);
-            AllCategories.Add(newCategory);
-            ClickCount++;
-        }
-
         private int _clickCount;
         public int ClickCount
         {
             get => _clickCount;
             set => SetProperty(ref _clickCount, value);
         }
-
         public RelayCommand AddClickCountCommand { get; }
-
         private void AddClickCount()
         {
             ClickCount++;
         }
 
-        //addNewCategory = new RelayCommand(() =>
-        //         {
-        //             //Window wnd = obj as Window;
-        //             int id;
-        //             string resultStr = "";
-        //             if (CategoryName == null || CategoryName.Replace(" ", "").Length == 0)
-        //             {
-        //                 //SetRedBlockControl(wnd, "NameBlock");
-        //             }
-        //             else
-        //             {
-        //                 id = DataWorker.CreateSpendingCategory(CategoryName);
+        //команды для добавляения
+        //public RelayCommand<string> AddNewCategoryCommand { get; }
+        //private void AddNewCategory(string categoryName)
+        //{
+        //    if (categoryName == null || categoryName.Replace(" ", "").Length == 0)
+        //    {
+        //        //SetRedBlockControl(wnd, "NameBlock");
+        //        return;
+        //    }
+        //    int id = DataWorker.CreateSpendingCategory(categoryName);
+        //    SpendingCategory newCategory = DataWorker.GetCategoryById(id);
+        //    AllCategories.Add(newCategory);
+        //    ClickCount++;
+        //}
 
-
-        //                 SpendingCategory newCategory = DataWorker.GetCategoryById(id);
-        //                 AllCategories.Add(newCategory);
-        //                 var t = allCategory;
-        //                 AllCategories = null;
-        //                 //AllCategories= t;
-        //                 //ShowMessageToUser(resultSrt);
-        //                 //UpdateAllDataView();
-        //                 //SetNullValuesToProperties();
-        //                 //wnd.Close();
-        //             }
-        //         }));
-        //     }
-        // }
-
-        public RelayCommand<object> AddNewPositionCommand { get; }
-
-        private void AddNewPosition(string categoryName)
-        {
-            if (categoryName == null || categoryName.Replace(" ", "").Length == 0)
-            {
-                //SetRedBlockControl(wnd, "NameBlock");
-                return;
-            }
-            int id = DataWorker.CreateSpendingCategory(categoryName);
-            SpendingCategory newCategory = DataWorker.GetCategoryById(id);
-            AllCategories.Add(newCategory);
-            ClickCount++;
-        }
+        //public RelayCommand<string> AddNewPositionCommand { get; }
+        //private void AddNewPosition(string positionName)
+        //{
+        //    if (positionName == null || positionName.Replace(" ", "").Length == 0)
+        //    {
+        //        //SetRedBlockControl(wnd, "NameBlock");
+        //        return;
+        //    }
+        //    int id = DataWorker.CreatePosition(positionName);
+        //    Position newPosition = DataWorker.GetPositionById(id);
+        //    AllPositions.Add(newPosition);
+        //    ClickCount++;
+        //}
 
         private RelayCommand<object> addNewUser;
         public RelayCommand<object> AddNewUser
@@ -394,8 +363,15 @@ namespace ManagerFamily.ViewModel
         }
         private void OpenAddWriteWindowMethod()
         {
-            AddNewWrite newWrite = new AddNewWrite();
-            SetCenterPositionAndOpen(newWrite);
+            var viewModel = new NewPositionViewModel();
+            var newPositionView = new AddNewWrite(viewModel);
+            newPositionView.ShowDialog();
+
+            if (viewModel.ResultId != -1)
+            {
+                Position newPosition = DataWorker.GetPositionById(viewModel.ResultId);
+                AllPositions.Add(newPosition);
+            }
         }
         private void OpenAddUserWindowMethod()
         {
@@ -464,3 +440,30 @@ namespace ManagerFamily.ViewModel
         }
     }
 }
+//addNewCategory = new RelayCommand(() =>
+//         {
+//             //Window wnd = obj as Window;
+//             int id;
+//             string resultStr = "";
+//             if (CategoryName == null || CategoryName.Replace(" ", "").Length == 0)
+//             {
+//                 //SetRedBlockControl(wnd, "NameBlock");
+//             }
+//             else
+//             {
+//                 id = DataWorker.CreateSpendingCategory(CategoryName);
+
+
+//                 SpendingCategory newCategory = DataWorker.GetCategoryById(id);
+//                 AllCategories.Add(newCategory);
+//                 var t = allCategory;
+//                 AllCategories = null;
+//                 //AllCategories= t;
+//                 //ShowMessageToUser(resultSrt);
+//                 //UpdateAllDataView();
+//                 //SetNullValuesToProperties();
+//                 //wnd.Close();
+//             }
+//         }));
+//     }
+// }
