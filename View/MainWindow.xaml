@@ -109,8 +109,8 @@
                     HorizontalAlignment="Right">
             <Button Content="Count" Command="{Binding AddClickCountCommand}"/>
             <Button Content="Новая затрата" Command="{Binding OpenAddNewUserWnd}"/>
-            <Button Content="Новая конкретная трата" Command="{Binding OpenAddNewWriteWnd}"/>
-            <Button Content="Новая категория трат" Command="{Binding OpenAddNewPositionWnd}"/>
+            <Button Content="Новая конкретная трата" Command="{Binding OpenAddNewPositionNewWnd}"/>
+            <Button Content="Новая категория трат" Command="{Binding OpenAddNewCategoryWnd}"/>
         </StackPanel>
     </Grid>
 </Window>
