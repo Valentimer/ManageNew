@@ -30,9 +30,7 @@ namespace ManagerFamily.ViewModel
             allPosition = new ObservableCollection<Position>(positions);
             allUser = new ObservableCollection<User>(users);
 
-            //AddNewCategoryCommand = new RelayCommand<string>(AddNewCategory);
             AddClickCountCommand = new RelayCommand(AddClickCount);
-            //AddNewPositionCommand = new RelayCommand<string>(AddNewPosition);
             DataManager = new DataFlowManager();
         }
 
@@ -53,7 +51,7 @@ namespace ManagerFamily.ViewModel
         }
 
         //все траты
-        private ObservableCollection<User> allUser; //= DataWorker.GetAllUsers();
+        private ObservableCollection<User> allUser;
         public ObservableCollection<User> AllUsers
         {
             get => allUser;
@@ -71,10 +69,10 @@ namespace ManagerFamily.ViewModel
         //public SpendingCategory PostionCategory { get; set; }
 
         //свойства для юзеров
-        public string UserName { get; set; }
-        public string UserSurName { get; set; }
-        public string UserPhone { get; set; }
-        public Position UserPosition { get; set; }
+        //public string UserName { get; set; }
+        //public string UserSurName { get; set; }
+        //public string UserPhone { get; set; }
+        //public Position UserPosition { get; set; }
 
         //свойства для выделенных элементов
         public TabItem SelectedTabTtem { get; set; }
@@ -84,7 +82,7 @@ namespace ManagerFamily.ViewModel
 
         #endregion
 
-        #region COMMANDS TO ADD
+        #region COMMANDS TO ADD CLICK
         private int _clickCount;
         public int ClickCount
         {
@@ -95,77 +93,6 @@ namespace ManagerFamily.ViewModel
         private void AddClickCount()
         {
             ClickCount++;
-        }
-
-        //команды для добавляения
-        //public RelayCommand<string> AddNewCategoryCommand { get; }
-        //private void AddNewCategory(string categoryName)
-        //{
-        //    if (categoryName == null || categoryName.Replace(" ", "").Length == 0)
-        //    {
-        //        //SetRedBlockControl(wnd, "NameBlock");
-        //        return;
-        //    }
-        //    int id = DataWorker.CreateSpendingCategory(categoryName);
-        //    SpendingCategory newCategory = DataWorker.GetCategoryById(id);
-        //    AllCategories.Add(newCategory);
-        //    ClickCount++;
-        //}
-
-        //public RelayCommand<string> AddNewPositionCommand { get; }
-        //private void AddNewPosition(string positionName)
-        //{
-        //    if (positionName == null || positionName.Replace(" ", "").Length == 0)
-        //    {
-        //        //SetRedBlockControl(wnd, "NameBlock");
-        //        return;
-        //    }
-        //    int id = DataWorker.CreatePosition(positionName);
-        //    Position newPosition = DataWorker.GetPositionById(id);
-        //    AllPositions.Add(newPosition);
-        //    ClickCount++;
-        //}
-
-        private RelayCommand<object> addNewUser;
-        public RelayCommand<object> AddNewUser
-        {
-            get
-            {
-                return addNewUser ?? (addNewUser = new RelayCommand<object>(obj =>
-                {
-                    Window wnd = obj as Window;
-                    string resultStr = "";
-                    int id;
-                    if (UserName == null || UserName.Replace(" ", "").Length == 0)
-                    {
-                        SetRedBlockControl(wnd, "NameBlock");
-                    }
-                    if (UserSurName == null || UserSurName.Replace(" ", "").Length == 0)
-                    {
-                        SetRedBlockControl(wnd, "SurNameBlock");
-                    }
-                    if (UserPosition == null)
-                    {
-                        MessageBox.Show("Укажите пизицию трат!");
-                    }
-                    else
-                    {
-                        //resultStr = DataWorker.CreateUser(UserName, UserSurName, UserPhone, UserPosition);
-                        id = DataWorker.CreateUser(UserName, UserSurName, UserPhone, UserPosition);
-
-                        User newUser = DataWorker.GetUserById(id);
-                        AllUsers.Add(newUser);
-
-                        var t = allUser;
-                        AllUsers = null;
-                        AllUsers = t;
-                        //ShowMessageToUser(resultStr);
-                        //UpdateAllDataView();
-                        SetNullValuesToProperties();
-                        wnd.Close();
-                    }
-                }));
-            }
         }
 
         #endregion
@@ -215,10 +142,10 @@ namespace ManagerFamily.ViewModel
 
         private RelayCommand openAddNewPositionNewWnd;
         public RelayCommand OpenAddNewPositionNewWnd => openAddNewPositionNewWnd ??= new RelayCommand(AddNewPosition);
-       
 
-        //private RelayCommand openAddNewUser;
-        //public RelayCommand OpenAddNewUserWnd => openAddNewUser ??= new RelayCommand(AddNewUser);
+
+        private RelayCommand openAddNewUser;
+        public RelayCommand OpenAddNewUserWnd => openAddNewUser ??= new RelayCommand(AddNewUser);
 
 
         private RelayCommand<object> openEditItemWnd;
@@ -251,33 +178,33 @@ namespace ManagerFamily.ViewModel
 
         #region EDIT COMMANDS
 
-        private RelayCommand<object> editUser;
-        public RelayCommand<object> EditUser
-        {
-            get
-            {
-                return editUser ?? (editUser = new RelayCommand<object>(obj =>
-                {
-                    Window window = obj as Window;
-                    string resultStr = "Не выбран пользователь";
-                    string noPosition = "Не выбрана новая категория";
-                    if (SelectedUser != null)
-                    {
-                        if (UserPosition != null)
-                        {
-                            resultStr = DataWorker.EditUser(SelectedUser, UserName, UserSurName, UserPhone, UserPosition);
-                            User updatedItem = DataWorker.GetUserById(SelectedUser.Id);
-                            AllUsers.Replace(SelectedUser, updatedItem);
+        //private RelayCommand<object> editUser;
+        //public RelayCommand<object> EditUser
+        //{
+        //    get
+        //    {
+        //        return editUser ?? (editUser = new RelayCommand<object>(obj =>
+        //        {
+        //            Window window = obj as Window;
+        //            string resultStr = "Не выбран пользователь";
+        //            string noPosition = "Не выбрана новая категория";
+        //            if (SelectedUser != null)
+        //            {
+        //                if (UserPosition != null)
+        //                {
+        //                    resultStr = DataWorker.EditUser(SelectedUser, UserName, UserSurName, UserPhone, UserPosition);
+        //                    User updatedItem = DataWorker.GetUserById(SelectedUser.Id);
+        //                    AllUsers.Replace(SelectedUser, updatedItem);
 
-                            SetNullValuesToProperties();
-                            ShowMessageToUser(resultStr);
-                            window.Close();
-                        }
-                        else ShowMessageToUser(noPosition);
-                    }
-                }));
-            }
-        }
+        //                    SetNullValuesToProperties();
+        //                    ShowMessageToUser(resultStr);
+        //                    window.Close();
+        //                }
+        //                else ShowMessageToUser(noPosition);
+        //            }
+        //        }));
+        //    }
+        //}
 
         //private RelayCommand<object> editPosition;
         //public RelayCommand<object> EditPosition
@@ -326,13 +253,6 @@ namespace ManagerFamily.ViewModel
         #endregion
 
         #region METHODS TO OPEN WINDOW
-        //методы открытия окон
-     
-        private void OpenAddUserWindowMethod()
-        {
-            AddNewUser newUser = new AddNewUser();
-            SetCenterPositionAndOpen(newUser);
-        }
 
         //методы окна редактирования
         private void OpenEditAddPositionWindowMethod(SpendingCategory spendingCategory)
@@ -361,22 +281,15 @@ namespace ManagerFamily.ViewModel
 
         #endregion
 
-
-        private void SetRedBlockControl(Window wnd, string blockName)
-        {
-            Control block = wnd.FindName(blockName) as Control;
-            block.BorderBrush = Brushes.Red;
-        }
-
         #region UPDATE VIEWS
 
         private void SetNullValuesToProperties()
         {
             //для юзера
-            UserName = null;
-            UserSurName = null;
-            UserPhone = null;
-            UserPosition = null;
+            //UserName = null;
+            //UserSurName = null;
+            //UserPhone = null;
+            //UserPosition = null;
             //для позиций
             //PositionName = null;
             //PositionPrice = 0;
@@ -394,6 +307,7 @@ namespace ManagerFamily.ViewModel
             SetCenterPositionAndOpen(messageView);
         }
 
+        #region METHOD TO ADD
         public void AddNewCategory()
         {
             bool result = DataManager.TryCreateSpendingCategory(out SpendingCategory newCategory);
@@ -411,32 +325,15 @@ namespace ManagerFamily.ViewModel
                 AllPositions.Add(position);
             }
         }
+
+        public void AddNewUser()
+        {
+            bool result = DataManager.TryCreatUser(out User user);
+            if (result)
+            {
+                AllUsers.Add(user);
+            }
+        }
+        #endregion
     }
 }
-//addNewCategory = new RelayCommand(() =>
-//         {
-//             //Window wnd = obj as Window;
-//             int id;
-//             string resultStr = "";
-//             if (CategoryName == null || CategoryName.Replace(" ", "").Length == 0)
-//             {
-//                 //SetRedBlockControl(wnd, "NameBlock");
-//             }
-//             else
-//             {
-//                 id = DataWorker.CreateSpendingCategory(CategoryName);
-
-
-//                 SpendingCategory newCategory = DataWorker.GetCategoryById(id);
-//                 AllCategories.Add(newCategory);
-//                 var t = allCategory;
-//                 AllCategories = null;
-//                 //AllCategories= t;
-//                 //ShowMessageToUser(resultSrt);
-//                 //UpdateAllDataView();
-//                 //SetNullValuesToProperties();
-//                 //wnd.Close();
-//             }
-//         }));
-//     }
-// }

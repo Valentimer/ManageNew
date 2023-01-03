@@ -3,11 +3,11 @@ using System.Windows;
 namespace ManagerFamily.View
 {
     /// <summary>
-    /// Interaction logic for AddNewUser.xaml
+    /// Interaction logic for AddNewUserView.xaml
     /// </summary>
-    public partial class AddNewUser : Window
+    public partial class AddNewUserView : Window
     {
-        public AddNewUser()
+        public AddNewUserView()
         {
             InitializeComponent();
         }
