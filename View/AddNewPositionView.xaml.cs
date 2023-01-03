@@ -17,14 +17,13 @@ using System.Windows.Shapes;
 namespace ManagerFamily.View
 {
     /// <summary>
-    /// Interaction logic for AddNewWrite.xaml
+    /// Interaction logic for AddNewPositionView.xaml
     /// </summary>
-    public partial class AddNewWrite : Window
+    public partial class AddNewPositionView : Window
     {
-        public AddNewWrite(ObservableObject context)
+        public AddNewPositionView()
         {
             InitializeComponent();
-            DataContext = context;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ManagerFamily.Model;
+using ManagerFamily.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,6 @@ namespace ManagerFamily.ViewModel
 {
     public class NewSpendingCategoryViewModel : ObservableObject
     {
-        public int ResultId { get; set; } = -1;
-
         public string CategoryName { get; set; }
         public RelayCommand<Window> AddNewCategoryCommand { get; }
 
@@ -28,7 +27,7 @@ namespace ManagerFamily.ViewModel
             {
                 return;
             }
-            ResultId = DataWorker.CreateSpendingCategory(CategoryName);
+            window.DialogResult = true;
             window.Close();
         }
     }

@@ -13,13 +13,13 @@ namespace ManagerFamily.ViewModel
 {
     public class NewPositionViewModel: ObservableObject
     {
-        public int ResultId { get; set; } = -1;
         public List<SpendingCategory> AllCategories { get; set; }
 
         public string PositionName { get; set; }
         public decimal PositionPrice { get; set; }
         public int PositionNumber { get; set; }
         public SpendingCategory PostionCategory { get; set; }
+
         public RelayCommand<Window> AddNewPositionCommand { get; }
 
         public NewPositionViewModel()
@@ -34,7 +34,7 @@ namespace ManagerFamily.ViewModel
             {
                 return;
             }
-            ResultId = DataWorker.CreatePosition(PositionName, PositionPrice, PositionNumber, PostionCategory);
+            window.DialogResult = true;
             window.Close();
         }
     }
