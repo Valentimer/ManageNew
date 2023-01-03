@@ -45,5 +45,20 @@ namespace ManagerFamily.Service
             else { position = null; }
             return result;
         }
+
+        public bool TryCreatUser (out User user)
+        {
+            NewUserViewModel viewModel = new NewUserViewModel();
+            AddNewUserView newUserView = new AddNewUserView();
+            newUserView.DataContext = viewModel;
+            bool result = newUserView.ShowDialog() ?? false;
+            if (result)
+            {
+                int resultId = DataWorker.CreateUser(viewModel.UserName, viewModel.UserSurName, viewModel.UserPhone, viewModel.UserPosition);
+                user = DataWorker.GetUserById(resultId);
+            }
+            else { user = null; }
+            return result;
+        }
     }
 }
