@@ -7,9 +7,9 @@ namespace ManagerFamily.View
     /// <summary>
     /// Interaction logic for EditWrite.xaml
     /// </summary>
-    public partial class EditWrite : Window
+    public partial class EditPositionView : Window
     {
-        public EditWrite(Position position)
+        public EditPositionView()
         {
             InitializeComponent();
         }

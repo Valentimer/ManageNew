@@ -59,21 +59,6 @@ namespace ManagerFamily.ViewModel
         }
 
         #region СВОЙСТВА ДЛЯ ПОЛЕЙ
-        //свойства для категорий
-        //public string CategoryName { get; set; }
-
-        ////свойства для позиций
-        //public string PositionName { get; set; }
-        //public decimal PositionPrice { get; set; }
-        //public int PositionNumber { get; set; }
-        //public SpendingCategory PostionCategory { get; set; }
-
-        //свойства для юзеров
-        //public string UserName { get; set; }
-        //public string UserSurName { get; set; }
-        //public string UserPhone { get; set; }
-        //public Position UserPosition { get; set; }
-
         //свойства для выделенных элементов
         public TabItem SelectedTabTtem { get; set; }
         public User SelectedUser { get; set; }
@@ -153,123 +138,32 @@ namespace ManagerFamily.ViewModel
         {
             get
             {
-                return openEditItemWnd ?? (openEditItemWnd = new RelayCommand<object>(obj =>
+                return openEditItemWnd ??= new RelayCommand<object>(obj =>
                 {
-                    string resultStr = "Ничего не выбрано";
-                    //если юзер
                     if (SelectedTabTtem.Name == "UsersTab" && SelectedUser != null)
                     {
-                        OpenEditAddUserWindowMethod(SelectedUser);
+                        EditUser();
                     }
-                    //если позиция
-                    if (SelectedTabTtem.Name == "CategoryTab" && SelectedCategory != null)
-                    {
-                        OpenEditAddPositionWindowMethod(SelectedCategory);
-                    }
-                    //если категория
+
                     if (SelectedTabTtem.Name == "PositionTab" && SelectedPosition != null)
                     {
-                        OpenEditAddWriteWindowMethod(SelectedPosition);
+                        EditPosition();
                     }
-                }));
+
+                    if (SelectedTabTtem.Name == "CategoryTab" && SelectedCategory != null)
+                    {
+                        EditCategory();
+                    }
+                });
             }
         }
+        
         #endregion
 
         #region EDIT COMMANDS
-
-        //private RelayCommand<object> editUser;
-        //public RelayCommand<object> EditUser
-        //{
-        //    get
-        //    {
-        //        return editUser ?? (editUser = new RelayCommand<object>(obj =>
-        //        {
-        //            Window window = obj as Window;
-        //            string resultStr = "Не выбран пользователь";
-        //            string noPosition = "Не выбрана новая категория";
-        //            if (SelectedUser != null)
-        //            {
-        //                if (UserPosition != null)
-        //                {
-        //                    resultStr = DataWorker.EditUser(SelectedUser, UserName, UserSurName, UserPhone, UserPosition);
-        //                    User updatedItem = DataWorker.GetUserById(SelectedUser.Id);
-        //                    AllUsers.Replace(SelectedUser, updatedItem);
-
-        //                    SetNullValuesToProperties();
-        //                    ShowMessageToUser(resultStr);
-        //                    window.Close();
-        //                }
-        //                else ShowMessageToUser(noPosition);
-        //            }
-        //        }));
-        //    }
-        //}
-
-        //private RelayCommand<object> editPosition;
-        //public RelayCommand<object> EditPosition
-        //{
-        //    get
-        //    {
-        //        return editPosition ?? (editPosition = new RelayCommand<object>(obj =>
-        //        {
-        //            Window window = obj as Window;
-        //            string resultStr = "Не выбрана категория";
-        //            string noCategory = "Не выбрана новая категория трат";
-        //            if (SelectedPosition != null)
-        //            {
-        //                if (PostionCategory != null)
-        //                {
-        //                    resultStr = DataWorker.EditPosition(SelectedPosition, PositionName, PositionPrice, PositionNumber, PostionCategory);
-        //                    SetNullValuesToProperties();
-        //                    ShowMessageToUser(resultStr);
-        //                    window.Close();
-        //                }
-        //                else ShowMessageToUser(noCategory);
-        //            }
-        //        }));
-        //    }
-        //}
-
-        //private RelayCommand<object> editCategory;
-        //public RelayCommand<object> EditCategory
-        //{
-        //    get
-        //    {
-        //        return editCategory ?? (editCategory = new RelayCommand<object>(obj =>
-        //        {
-        //            Window window = obj as Window;
-        //            string resultStr = "Не выбрана категория трат";
-        //            if (SelectedCategory != null)
-        //            {
-        //                resultStr = DataWorker.EditSpendingCategory(SelectedCategory, CategoryName);
-        //                SetNullValuesToProperties();
-        //                ShowMessageToUser(resultStr);
-        //                window.Close();
-        //            }
-        //        }));
-        //    }
-        //}
         #endregion
 
         #region METHODS TO OPEN WINDOW
-
-        //методы окна редактирования
-        private void OpenEditAddPositionWindowMethod(SpendingCategory spendingCategory)
-        {
-            EditSpendingCategory editPosition = new EditSpendingCategory(spendingCategory);
-            SetCenterPositionAndOpen(editPosition);
-        }
-        private void OpenEditAddWriteWindowMethod(Position position)
-        {
-            EditWrite editWrite = new EditWrite(position);
-            SetCenterPositionAndOpen(editWrite);
-        }
-        private void OpenEditAddUserWindowMethod(User user)
-        {
-            EditUsers editUser = new EditUsers(user);
-            SetCenterPositionAndOpen(editUser);
-        }
 
         private void SetCenterPositionAndOpen(Window window)
         {
@@ -285,18 +179,6 @@ namespace ManagerFamily.ViewModel
 
         private void SetNullValuesToProperties()
         {
-            //для юзера
-            //UserName = null;
-            //UserSurName = null;
-            //UserPhone = null;
-            //UserPosition = null;
-            //для позиций
-            //PositionName = null;
-            //PositionPrice = 0;
-            //PositionNumber = 0;
-            //PostionCategory = null;
-            ////для категорий
-            //CategoryName = null;
         }
 
         #endregion
@@ -319,7 +201,7 @@ namespace ManagerFamily.ViewModel
 
         public void AddNewPosition()
         {
-            bool result = DataManager.TryCreatPosition(out Position position);
+            bool result = DataManager.TryCreatePosition(out Position position);
             if (result )
             {
                 AllPositions.Add(position);
@@ -328,10 +210,40 @@ namespace ManagerFamily.ViewModel
 
         public void AddNewUser()
         {
-            bool result = DataManager.TryCreatUser(out User user);
+            bool result = DataManager.TryCreateUser(out User user);
             if (result)
             {
                 AllUsers.Add(user);
+            }
+        }
+
+        public void EditCategory()
+        {
+            bool result = DataManager.TryEditSpendingCategory(SelectedCategory, out SpendingCategory category);
+
+            if (result)
+            {
+                AllCategories.Replace(SelectedCategory, category);
+            }
+        }
+
+        public void EditPosition()
+        {
+            bool result = DataManager.TryEditPosition(SelectedPosition, out Position position);
+
+            if (result)
+            {
+                AllPositions.Replace(SelectedPosition, position);
+            }
+        }
+
+        public void EditUser()
+        {
+            bool result = DataManager.TryEditUser(SelectedUser, out User user);
+
+            if (result)
+            {
+                AllUsers.Replace(SelectedUser, user);
             }
         }
         #endregion
