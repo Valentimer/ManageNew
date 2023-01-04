@@ -1,11 +1,11 @@
-﻿<Window x:Class="ManagerFamily.View.EditWrite"
+﻿<Window x:Class="ManagerFamily.View.EditPositionView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ManagerFamily.View"
         mc:Ignorable="d"
-        Title="EditWrite" Height="300" Width="300"
+        Title="EditPosition" Height="300" Width="300"
         Name="EditPositionWnd">
     <Grid>
         <Grid.RowDefinitions>
@@ -29,8 +29,8 @@
                       SelectedItem="{Binding PostionCategory}"/>
 
         </StackPanel>
-        <Button Grid.Row="1" Content="Add write"
-                Command="{Binding EditPosition}"
+        <Button Grid.Row="1" Content="Edit position"
+                Command="{Binding EditPositionCommand}"
                 CommandParameter="{Binding ElementName=EditPositionWnd}"/>
     </Grid>
 </Window>

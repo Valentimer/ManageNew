@@ -150,25 +150,25 @@ namespace ManagerFamily.Model
 
         //редактировать категорию трат
 
-        public static string EditSpendingCategory(SpendingCategory oldDepartment, string newName)
+        public static int EditSpendingCategory(SpendingCategory oldDepartment, string newName)
         {
-            string result = "Такого не существует";
+            int result = int.MinValue;
 
             using (ApplicationContext db = new ApplicationContext())
             {
                 SpendingCategory spendingCategory = db.SpendingCategories.FirstOrDefault(x => x.Id == oldDepartment.Id);
                 spendingCategory.Name = newName;
                 db.SaveChanges();
-                result = "Категория" + spendingCategory.Name + "изменена!";
+                result = spendingCategory.Id;
+                return result;
             }
-            return result;
         }
 
         //редактировать конкретную трату
 
-        public static string EditPosition(Position oldPosition, string newName, decimal newPrice, int newNumber, SpendingCategory newDepartment)
+        public static int EditPosition(Position oldPosition, string newName, decimal newPrice, int newNumber, SpendingCategory newDepartment)
         {
-            string result = "Такого не существует";
+            int result = int.MinValue;
 
             using (ApplicationContext db = new ApplicationContext())
             {
@@ -178,31 +178,28 @@ namespace ManagerFamily.Model
                 position.MaxNumber = newNumber;
                 position.SpendingCategoryId = newDepartment.Id;
                 db.SaveChanges();
-                result = "Категория" + position.Name + "изменена!";
+                result = position.Id;
+                return result;
             }
-            return result;
         }
 
         //редактировать трату
 
-        public static string EditUser(User oldUser, string newName, string newSurName, string newPhone, Position newPosition)
+        public static int EditUser(User oldUser, string newName, string newSurName, string newPhone, Position newPosition)
         {
-            string result = "Такого не существует";
+            int result = int.MinValue;
 
             using (ApplicationContext db = new ApplicationContext())
             {
                 User user = db.Users.FirstOrDefault(x => x.Id == oldUser.Id);
-                if (user != null)
-                {
-                    user.Name = newName;
-                    user.SurName = newSurName;
-                    user.Phone = newPhone;
-                    user.PositionId = newPosition.Id;
-                    db.SaveChanges();
-                    result = "Категория" + user.Name + "изменена!";
-                }
+                user.Name = newName;
+                user.SurName = newSurName;
+                user.Phone = newPhone;
+                user.PositionId = newPosition.Id;
+                db.SaveChanges();
+                result = user.Id;
+                return result;
             }
-            return result;
         }
 
         //получение позиции по id позиции

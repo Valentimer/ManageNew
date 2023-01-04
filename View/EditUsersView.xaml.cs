@@ -1,14 +1,15 @@
 ﻿using ManagerFamily.Model;
 using ManagerFamily.ViewModel;
 using System.Windows;
+
 namespace ManagerFamily.View
 {
     /// <summary>
-    /// Interaction logic for EditPosition.xaml
+    /// Interaction logic for EditUsers.xaml
     /// </summary>
-    public partial class EditSpendingCategory : Window
+    public partial class EditUsersView : Window
     {
-        public EditSpendingCategory(SpendingCategory spendingCategory)
+        public EditUsersView()
         {
             InitializeComponent();
         }
