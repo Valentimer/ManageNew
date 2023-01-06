@@ -12,7 +12,7 @@
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
-        <TabControl Grid.Row="0" SelectedItem="{Binding SelectedTabTtem}">
+        <TabControl Grid.Row="0" SelectedIndex="{Binding SelectedTabIndex}">
 
             <TabItem Name="UsersTab">
                 <TabItem.Header>
@@ -86,13 +86,13 @@
                 </TabItem.ContextMenu>
                 <ListView x:Name="ViewAllCategories" ItemsSource="{Binding AllCategories, Mode=TwoWay}"
                           SelectedItem="{Binding SelectedCategory}">
-                    <!--<ListBox.ItemTemplate>
+                    <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
                                 <TextBlock Text="{Binding Name}"/>
                             </StackPanel>
                         </DataTemplate>
-                    </ListBox.ItemTemplate>-->
+                    </ListBox.ItemTemplate>
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Name" 

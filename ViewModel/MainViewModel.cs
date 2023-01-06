@@ -4,22 +4,20 @@ using ManagerFamily.Extensions;
 using ManagerFamily.Model;
 using ManagerFamily.Service;
 using ManagerFamily.View;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace ManagerFamily.ViewModel
 {
     public class MainViewModel : ObservableObject
     {
         private DataFlowManager DataManager;
+
+        private const int USER_TAB_INDEX = 0;
+        private const int POSITION_TAB_INDEX = 1;
+        private const int CATEGORY_TAB_INDEX = 2;
+
         public MainViewModel()
         {
             List<SpendingCategory> categories = DataWorker.GetAllSpendingCategories();
@@ -29,10 +27,10 @@ namespace ManagerFamily.ViewModel
             allCategory = new ObservableCollection<SpendingCategory>(categories);
             allPosition = new ObservableCollection<Position>(positions);
             allUser = new ObservableCollection<User>(users);
-
-            AddClickCountCommand = new RelayCommand(AddClickCount);
             DataManager = new DataFlowManager();
         }
+
+        public List<string> Data { get; }
 
         //все категории трат
         private ObservableCollection<SpendingCategory> allCategory;
@@ -59,26 +57,16 @@ namespace ManagerFamily.ViewModel
         }
 
         #region СВОЙСТВА ДЛЯ ПОЛЕЙ
-        //свойства для выделенных элементов
-        public TabItem SelectedTabTtem { get; set; }
+
+        private int _selectedTabIndex;
+        public int SelectedTabIndex
+        {
+            get => _selectedTabIndex;
+            set => SetProperty(ref _selectedTabIndex, value);
+        }
         public User SelectedUser { get; set; }
         public Position SelectedPosition { get; set; }
         public SpendingCategory SelectedCategory { get; set; }
-
-        #endregion
-
-        #region COMMANDS TO ADD CLICK
-        private int _clickCount;
-        public int ClickCount
-        {
-            get => _clickCount;
-            set => SetProperty(ref _clickCount, value);
-        }
-        public RelayCommand AddClickCountCommand { get; }
-        private void AddClickCount()
-        {
-            ClickCount++;
-        }
 
         #endregion
 
@@ -93,19 +81,19 @@ namespace ManagerFamily.ViewModel
                 {
                     string resultStr = "Ничего не выбрано";
                     //если юзер
-                    if (SelectedTabTtem.Name == "UsersTab" && SelectedUser != null)
+                    if (SelectedTabIndex == USER_TAB_INDEX && SelectedUser != null)
                     {
                         resultStr = DataWorker.DeleteUser(SelectedUser);
                         AllUsers.Remove(SelectedUser);
                     }
                     //если позиция
-                    if (SelectedTabTtem.Name == "PositionTab" && SelectedPosition != null)
+                    if (SelectedTabIndex == POSITION_TAB_INDEX && SelectedPosition != null)
                     {
                         resultStr = DataWorker.DeletePosition(SelectedPosition);
                         AllPositions.Remove(SelectedPosition);
                     }
                     //если категория
-                    if (SelectedTabTtem.Name == "CategoryTab" && SelectedCategory != null)
+                    if (SelectedTabIndex == CATEGORY_TAB_INDEX && SelectedCategory != null)
                     {
                         resultStr = DataWorker.DeleteSpendingCategory(SelectedCategory);
                         AllCategories.Remove(SelectedCategory);
@@ -140,27 +128,24 @@ namespace ManagerFamily.ViewModel
             {
                 return openEditItemWnd ??= new RelayCommand<object>(obj =>
                 {
-                    if (SelectedTabTtem.Name == "UsersTab" && SelectedUser != null)
+                    if (SelectedTabIndex == USER_TAB_INDEX && SelectedUser != null)
                     {
                         EditUser();
                     }
 
-                    if (SelectedTabTtem.Name == "PositionTab" && SelectedPosition != null)
+                    if (SelectedTabIndex == POSITION_TAB_INDEX && SelectedPosition != null)
                     {
                         EditPosition();
                     }
 
-                    if (SelectedTabTtem.Name == "CategoryTab" && SelectedCategory != null)
+                    if (SelectedTabIndex == CATEGORY_TAB_INDEX && SelectedCategory != null)
                     {
                         EditCategory();
                     }
                 });
             }
         }
-        
-        #endregion
 
-        #region EDIT COMMANDS
         #endregion
 
         #region METHODS TO OPEN WINDOW
@@ -195,6 +180,7 @@ namespace ManagerFamily.ViewModel
             bool result = DataManager.TryCreateSpendingCategory(out SpendingCategory newCategory);
             if (result)
             {
+                SelectedTabIndex = CATEGORY_TAB_INDEX;
                 AllCategories.Add(newCategory);
             }
         }
@@ -202,8 +188,9 @@ namespace ManagerFamily.ViewModel
         public void AddNewPosition()
         {
             bool result = DataManager.TryCreatePosition(out Position position);
-            if (result )
+            if (result)
             {
+                SelectedTabIndex = POSITION_TAB_INDEX;
                 AllPositions.Add(position);
             }
         }
@@ -213,6 +200,7 @@ namespace ManagerFamily.ViewModel
             bool result = DataManager.TryCreateUser(out User user);
             if (result)
             {
+                SelectedTabIndex = USER_TAB_INDEX;
                 AllUsers.Add(user);
             }
         }
